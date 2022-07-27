@@ -1,0 +1,171 @@
+1) Entity class for Medication
+
+Medication.java
+
+package com.medication.model;  
+import javax.persistence.Column;  
+import javax.persistence.Entity;  
+import javax.persistence.Id;  
+import javax.persistence.Table;  
+  
+@Entity  
+@Table  
+public class Medications
+{  
+ 
+@Id  
+@Column  
+private String name;  
+
+public String getName()  
+{  
+return name;  
+}  
+public void setName(String name)   
+{  
+this.name = name;  
+} 
+} 
+
+Entity class for Medication
+
+Medication.java
+
+package com.medication.model;  
+import javax.persistence.Column;  
+import javax.persistence.Entity;  
+import javax.persistence.Id;  
+import javax.persistence.Table;  
+  
+@Entity  
+@Table  
+public class Patients
+{  
+ 
+@Id  
+@Column  
+private Integer patientId;  
+
+public Integer getPatientId()  
+{  
+return patientId;  
+}  
+public void setPatientId(Integer patientId)   
+{  
+this.patientId = patientId;  
+} 
+
+
+@Column  
+private String name;  
+
+public String getName()  
+{  
+return name;  
+}  
+public void setName(String name)   
+{  
+this.name = name;  
+} 
+}  
+
+@Id  
+@Column 
+private Integer medicationId;  
+
+public Integer getMedicationId()  
+{  
+return medicationId;  
+}  
+public void setMedicationId(Integer medicationId)   
+{  
+this.medicationId = medicationId;  
+}  
+
+2) Controller class for medication
+
+package com.medication.controller;  
+import java.util.List;  
+import org.springframework.beans.factory.annotation.Autowired;  
+import org.springframework.web.bind.annotation.DeleteMapping;  
+import org.springframework.web.bind.annotation.GetMapping;  
+import org.springframework.web.bind.annotation.PathVariable;  
+import org.springframework.web.bind.annotation.PostMapping;  
+import org.springframework.web.bind.annotation.PutMapping;  
+import org.springframework.web.bind.annotation.RequestBody;  
+import org.springframework.web.bind.annotation.RestController;  
+import com.javatpoint.model.Medications;  
+import com.javatpoint.service.MedicationsService;  
+
+@RestController  
+public class MedicationsController   
+{  
+  
+@Autowired  
+MedicationsService medicationsService;  
+
+
+@GetMapping("/patient/{patientid}")  
+private Books getMedications(@PathVariable("patientid") int patientid)   
+{  
+return medicationsService.getMedicationsByPatientId(patientid);  
+}  
+
+@PostMapping("/medications")  
+private int saveBook(@RequestBody Medications medications)   
+{  
+medicationsService.saveOrUpdate(medications);  
+return medications.getMedicationsid();  
+}  
+
+
+
+}
+
+
+3) Service class for medication
+
+package com.medications.service;  
+import java.util.ArrayList;  
+import java.util.List;  
+import org.springframework.beans.factory.annotation.Autowired;  
+import org.springframework.stereotype.Service;  
+import com.javatpoint.model.Medications;  
+import com.javatpoint.repository.MedicationsRepository;  
+ 
+@Service  
+public class MedicationsService   
+{  
+@Autowired  
+PateientsRepository pateientsRepository;  
+
+
+public Books getMedicationsByPatientId(int patientId)   
+{  
+return patientsRepository.findByIdpatientId).get();  
+}  
+
+public void saveOrUpdate(Medications medications)   
+{  
+medicationsRepository.save(medications);  
+}  
+
+}  
+
+4)Repository class for medication and patients
+
+package com.medication.repository;  
+import org.springframework.data.repository.CrudRepository;  
+import com.javatpoint.model.Medications;  
+
+public interface MedicationsRepository extends CrudRepository<Medication, Integer>  
+{  
+}  
+
+package com.medication.repository;  
+import org.springframework.data.repository.CrudRepository;  
+import com.javatpoint.model.Patients; 
+
+public interface PateientsRepository extends CrudRepository<Patients, Integer>  
+{  
+} 

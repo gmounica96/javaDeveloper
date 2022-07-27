@@ -1,0 +1,52 @@
+@GetMapping(value = "/patients/alberta/csv", produces = "text/csv")
+public ResponseEntity<Resource> exportCSV() {
+   
+    String[] csvHeader = {
+            "id", "firstName", "lastName", "email", "sex", "birthDate", "height", "weight", "uli"
+    };
+
+    
+    List<List<String>> csvBody = new ArrayList<>();
+    csvBody.add(Arrays.asList(1,"Tessy","Ciciotti","tciciotti0@bbb.org","Female","1948-08-15",167.8,55.9,3665253217);
+    csvBody.add(Arrays.asList(2,"Westbrook","Poskitt","wposkitt1@sun.com","Male","1963-06-08",145.8,117.9,3627457293);
+    csvBody.add(Arrays.asList(3,"Cal","Valeri","cvaleri2@huffingtonpost.com","Female","1954-01-21",154.6,57.7,9580499209);
+
+    ByteArrayInputStream byteArrayOutputStream;
+
+   
+    try (
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+        
+            CSVPrinter csvPrinter = new CSVPrinter(
+                    new PrintWriter(out),
+                 
+                    CSVFormat.DEFAULT.withHeader(csvHeader)
+            );
+    ) {
+        
+        for (List<String> record : csvBody)
+            csvPrinter.printRecord(record);
+
+        // writing the underlying stream
+        csvPrinter.flush();
+
+        byteArrayOutputStream = new ByteArrayInputStream(out.toByteArray());
+    } catch (IOException e) {
+        throw new RuntimeException(e.getMessage());
+    }
+
+    InputStreamResource fileInputStream = new InputStreamResource(byteArrayOutputStream);
+
+    String csvFileName = "patient.csv";
+
+   
+    HttpHeaders headers = new HttpHeaders();
+    headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + csvFileName);
+    headers.set(HttpHeaders.CONTENT_TYPE, "text/csv");
+
+    return new ResponseEntity<>(
+            fileInputStream,
+            headers,
+            HttpStatus.OK
+    );
+}
